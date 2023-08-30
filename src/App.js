@@ -4,6 +4,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
+import Dashboard from './pages/Dashboard'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PrivateRoutes from './utils/PrivateRoutes';
 
@@ -14,8 +15,8 @@ function App() {
       <Router>
         <Routes>
           <Route element={<PrivateRoutes />}>
-              
               <Route element={<AboutUs />} path='/aboutus' exact/>
+              <Route element={<Dashboard />} path='/dashboard' exact/>
           </Route>
           <Route element={<Home />} path='/' exact/>
           <Route element={<Login />} path='/login' exact/>
