@@ -45,7 +45,7 @@ export default function Column({ title, tasks, id }) {
           <TaskList
             ref={provided.innerRef}
             {...provided.droppableProps}
-            isDraggingOver={snapshot.isDraggingOver}
+            isdraggingover={snapshot.isdraggingover}
           >
             {tasks.map((task, index) => (
               <Task key={index} index={index} task={task} />

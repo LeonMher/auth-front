@@ -10,13 +10,21 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3000/signup', {
-            email,
-            password
+        axios.post('http://localhost:3001/api/signup', {
+          email,
+          password,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
         })
-        .then(()=>console.log('worked'))
-        .catch((err)=>console.log(err))
-    }
+          .then(async (response) => {
+            
+            console.log(response, ' desired token');
+          })
+          .catch((err) => console.log(err));
+      };
     return (
         <div>
             <h1>Signup</h1>

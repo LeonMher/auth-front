@@ -1,11 +1,16 @@
 import {Outlet, Navigate} from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 
 
 const PrivateRoutes = () => {
-    let auth = {'token': true}
+    
+    const token = Cookies.get('jwtt');
+    console.log(token, ' this is the token')
+    
 
     return (
-        auth.token ? <Outlet /> : <Navigate to="/login" />
+        token ? <Outlet /> : <Navigate to="/login" />
     )
 }
 
