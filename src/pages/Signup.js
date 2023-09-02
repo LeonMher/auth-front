@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -7,6 +8,7 @@ const Signup = () => {
 
 
    
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,7 +22,7 @@ const Signup = () => {
           withCredentials: true,
         })
           .then(async (response) => {
-            
+            navigate('/');
             console.log(response, ' desired token');
           })
           .catch((err) => console.log(err));

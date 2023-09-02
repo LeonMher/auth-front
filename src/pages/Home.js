@@ -1,11 +1,15 @@
 import React from 'react';
-import KanbanBoard from '../components/KanbanBoard';
+import { Link } from 'react-router-dom';
 
 
 const Home = () => {
     return (
         <div>
-            <h1>Welcome home</h1>
+            <h1>SSS</h1>
+            <Link to="/dashboard">Dashboard</Link>
+            <br/>
+            <Link to="/aboutus">About us</Link>
+          
         </div>
     )
 }

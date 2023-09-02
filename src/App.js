@@ -15,10 +15,10 @@ function App() {
       <Router>
         <Routes>
           <Route element={<PrivateRoutes />}>
+              <Route element={<Home />} path='/' exact/>
               <Route element={<AboutUs />} path='/aboutus' exact/>
               <Route element={<Dashboard />} path='/dashboard' exact/>
           </Route>
-          <Route element={<Home />} path='/' exact/>
           <Route element={<Login />} path='/login' exact/>
           <Route element={<Signup />} path='/signup' exact/>
           
