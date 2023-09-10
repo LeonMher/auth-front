@@ -75,6 +75,23 @@ export default class Demo extends React.PureComponent {
         .catch((error) => {
           console.error('Error adding new appointment:', error);
         });
+
+        // send sms 
+          // axios.post('http://localhost:3001/sms', {
+            
+          //   sms: added.title  
+          // }, {
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   withCredentials: true,
+          // })
+          // .then(async (response) => {
+           
+          //   console.log(response, ' sms');
+          // })
+          // .catch((err) => console.log(err));
+        
       
       data = [...data, newAppointment];
       }
