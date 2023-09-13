@@ -13,6 +13,8 @@ import {
   MonthView,
   DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import { DragDropProvider } from '@devexpress/dx-react-scheduler-material-ui';
+
 import moment from 'moment';
 import axios from 'axios'
 
@@ -180,6 +182,10 @@ export default class Demo extends React.PureComponent {
             showOpenButton
           />
            <CustomAppointmentForm />
+           <DragDropProvider
+  
+  
+/>
         </Scheduler>
       </Paper>
     );
