@@ -13,6 +13,7 @@ import {
   MonthView,
   DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import moment from 'moment';
 import axios from 'axios'
 
 import CustomAppointmentForm from '../components/CustomAppointmentForm';
@@ -58,14 +59,25 @@ export default class Demo extends React.PureComponent {
         
         const newAppointment = { ...added };
       
-        const startDate = added.startDate // Replace with your date
-        const formattedStartDate = startDate.toISOString().slice(0, 19).replace('T', ' ');
-        
-        const endDate = added.endDate // Replace with your date
-        const formattedEndDate = endDate.toISOString().slice(0, 19).replace('T', ' ');
 
-        newAppointment.startDate = formattedStartDate;
-        newAppointment.endDate = formattedEndDate;
+        
+        const startDate = newAppointment.startDate // Replace with your date
+
+
+        const formattedStartDate = moment(startDate);
+        // const formattedStartDate = startDate.toISOString();
+        
+        const endDate = newAppointment.endDate // Replace with your date
+        const formattedEndDate = moment(endDate);
+
+        const formattedStartDateString = formattedStartDate.format('YYYY-MM-DD HH:mm:ss');
+        const formattedEndDateString = formattedEndDate.format('YYYY-MM-DD HH:mm:ss');
+
+
+        newAppointment.startDate = formattedStartDateString;
+        newAppointment.endDate = formattedEndDateString;
+
+
 
 
       axios.post('http://localhost:3001/api/schedule', newAppointment)
@@ -77,20 +89,20 @@ export default class Demo extends React.PureComponent {
         });
 
         // send sms 
-          // axios.post('http://localhost:3001/sms', {
+      //     axios.post('http://localhost:3001/sms', {
             
-          //   sms: added.title  
-          // }, {
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   withCredentials: true,
-          // })
-          // .then(async (response) => {
+      //       sms: added.title  
+      //     }, {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //       withCredentials: true,
+      //     })
+      //     .then(async (response) => {
            
-          //   console.log(response, ' sms');
-          // })
-          // .catch((err) => console.log(err));
+      //       console.log(response, ' sms');
+      //     })
+      //     .catch((err) => console.log(err));
         
       
       data = [...data, newAppointment];
