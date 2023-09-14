@@ -156,8 +156,28 @@ export default class Demo extends React.PureComponent {
         this.setState({ dataChanged: true });
       }
       if (deleted !== undefined) {
-        data = data.filter(appointment => appointment.id !== deleted);
+        const deletedAppointmentId = deleted;
+
+        // Send a DELETE request to delete the appointment
+        axios
+          .delete(`http://localhost:3001/api/delete-schedule/${deletedAppointmentId}`)
+          .then((response) => {
+            if (response.status === 200) {
+              console.log('Appointment deleted successfully:', response.data);
+
+              // Update the data in your state after successful deletion
+              data = data.filter((appointment) => appointment.id !== deleted);
+              this.setState({ data });
+            } else if (response.status === 404) {
+              console.error('Appointment not found:', response.data);
+            }
+          })
+          .catch((error) => {
+            console.error('Error deleting appointment:', error);
+          });
       }
+
+      
       return { data };
     });
   }
