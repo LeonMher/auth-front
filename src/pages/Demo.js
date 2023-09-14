@@ -27,7 +27,9 @@ export default class Demo extends React.PureComponent {
     super(props);
 
     this.state = {
-      // data: appointments,
+      
+      data: [],
+      dataChanged: false,
       currentViewName: 'work-week',
     };
     this.currentViewNameChange = (currentViewName) => {
@@ -36,18 +38,33 @@ export default class Demo extends React.PureComponent {
     this.commitChanges = this.commitChanges.bind(this);
   }
 
-
+  
   componentDidMount() {
     // Make an Axios GET request to retrieve data from the API
     axios.get('http://localhost:3001/api/schedule')
       .then((response) => {
         const retrievedData = response.data;
         // Update the component's state with the retrieved data
-        this.setState({ data: retrievedData });
+        this.setState({ data: retrievedData });  
       })
       .catch((error) => {
         console.error('Error retrieving data:', error);
       });
+  }
+
+
+  componentDidUpdate() {
+    if (this.state.dataChanged) {
+      axios
+        .get('http://localhost:3001/api/schedule')
+        .then((response) => {
+          const retrievedData = response.data;
+          this.setState({ data: retrievedData, dataChanged: false });
+        })
+        .catch((error) => {
+          console.error('Error retrieving updated data:', error);
+        });
+    }
   }
 
    currentDate = new Date();
@@ -113,8 +130,30 @@ export default class Demo extends React.PureComponent {
 
 
       if (changed) {
-        data = data.map(appointment => (
-          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
+        for (let appointmentId in changed) {
+          const updatedAppointment = {
+            ...data.find((appointment) => appointment.id === appointmentId),
+            ...changed[appointmentId],
+          };
+  
+          // Convert dates to the desired format if necessary
+          updatedAppointment.startDate = moment(updatedAppointment.startDate).format('YYYY-MM-DD HH:mm:ss');
+          updatedAppointment.endDate = moment(updatedAppointment.endDate).format('YYYY-MM-DD HH:mm:ss');
+  
+          axios.put(`http://localhost:3001/api/update-schedule/${appointmentId}`, updatedAppointment)
+            .then((response) => {
+              console.log('Appointment updated successfully:', response.data);
+            })
+            .catch((error) => {
+              console.error('Error updating appointment:', error);
+            });
+  
+          data = data.map((appointment) =>
+            appointment.id === appointmentId ? updatedAppointment : appointment
+          );
+        }
+
+        this.setState({ dataChanged: true });
       }
       if (deleted !== undefined) {
         data = data.filter(appointment => appointment.id !== deleted);
