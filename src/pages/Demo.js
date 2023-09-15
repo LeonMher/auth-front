@@ -14,10 +14,11 @@ import {
   DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { DragDropProvider } from '@devexpress/dx-react-scheduler-material-ui';
+import Cookies from 'js-cookie';
 
 import moment from 'moment';
 import axios from 'axios'
-
+import {createTheme, ThemeProvider } from '@mui/material/styles';
 import CustomAppointmentForm from '../components/CustomAppointmentForm';
 
 import { appointments } from './demo-data/month-appointments';
@@ -205,8 +206,36 @@ export default class Demo extends React.PureComponent {
 
   render() {
     const { data, currentViewName } = this.state;
+    const currentUserRole = Cookies.get('currentUserRole');
+      const darkTheme = createTheme({
+      components: {
+        // Name of the component
+        MuiButton: {
+          styleOverrides: {
+            // Name of the slot
+            root: {
+              backgroundColor: 'black ', // Custom background color
+              // fontSize: '1.5rem', // Custom font size
+              color: 'white',
+              fontSize: '1rem',
+            },
+          },
+        },
+  
+        MuiPaper: {
+          styleOverrides: {
+            root: {
+              backgroundColor: currentUserRole === 'manager' ? 'black': 'white',
+              color:'white',
+              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+            },
+          },
+        }
+      },
+    });
 
     return (
+      <ThemeProvider theme={darkTheme}>
       <Paper>
         <Scheduler
           data={data}
@@ -247,6 +276,7 @@ export default class Demo extends React.PureComponent {
 />
         </Scheduler>
       </Paper>
+      </ThemeProvider>
     );
   }
 }

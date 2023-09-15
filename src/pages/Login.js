@@ -21,7 +21,6 @@ const handleSubmit = (e) => {
     withCredentials: true,
   })
   .then(async (response) => {
-    // Check for a successful login condition, and then navigate to the home page
     if (response.status === 200) {
         navigate('/'); // Navigate to the home page
     }
