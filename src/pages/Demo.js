@@ -225,7 +225,7 @@ export default class Demo extends React.PureComponent {
         MuiPaper: {
           styleOverrides: {
             root: {
-              backgroundColor: currentUserRole === 'manager' ? 'black': 'white',
+              backgroundColor: currentUserRole === 'employee' ? 'black': 'white',
               color:'white',
               boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
             },

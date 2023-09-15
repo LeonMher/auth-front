@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://LeonMher.github.io/auth-front/",
   "dependencies": {
+    "dhtmlx-gantt": "^7.1.9",
     "@devexpress/dx-react-core": "^4.0.5",
     "@devexpress/dx-react-scheduler": "^4.0.5",
     "@devexpress/dx-react-scheduler-material-ui": "^4.0.5",
