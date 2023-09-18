@@ -42,7 +42,7 @@ export default class Demo extends React.PureComponent {
   
   componentDidMount() {
     // Make an Axios GET request to retrieve data from the API
-    axios.get('http://localhost:3001/api/schedule')
+    axios.get(`http://localhost:3001/api/schedule/${this.props.userId}`)
       .then((response) => {
         const retrievedData = response.data;
         // Update the component's state with the retrieved data
@@ -53,11 +53,11 @@ export default class Demo extends React.PureComponent {
       });
   }
 
-
+  
   componentDidUpdate() {
     if (this.state.dataChanged) {
       axios
-        .get('http://localhost:3001/api/schedule')
+        .get(`http://localhost:3001/api/schedule/${this.props.userId}`)
         .then((response) => {
           const retrievedData = response.data;
           this.setState({ data: retrievedData, dataChanged: false });
@@ -76,11 +76,8 @@ export default class Demo extends React.PureComponent {
       let { data } = state;
       if (added) {
 
-        
         const newAppointment = { ...added };
-      
-
-        
+    
         const startDate = newAppointment.startDate // Replace with your date
 
 
@@ -93,14 +90,11 @@ export default class Demo extends React.PureComponent {
         const formattedStartDateString = formattedStartDate.format('YYYY-MM-DD HH:mm:ss');
         const formattedEndDateString = formattedEndDate.format('YYYY-MM-DD HH:mm:ss');
 
-
         newAppointment.startDate = formattedStartDateString;
         newAppointment.endDate = formattedEndDateString;
 
 
-
-
-      axios.post('http://localhost:3001/api/schedule', newAppointment)
+      axios.post(`http://localhost:3001/api/schedule/${this.props.userId}`, newAppointment)
         .then((response) => {
           console.log('New appointment added successfully:', response.data);
         })
@@ -109,20 +103,20 @@ export default class Demo extends React.PureComponent {
         });
 
         // send sms 
-      //     axios.post('http://localhost:3001/sms', {
+          // axios.post('http://localhost:3001/sms', {
             
-      //       sms: added.title  
-      //     }, {
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //       withCredentials: true,
-      //     })
-      //     .then(async (response) => {
+          //   sms: added.title  
+          // }, {
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   withCredentials: true,
+          // })
+          // .then(async (response) => {
            
-      //       console.log(response, ' sms');
-      //     })
-      //     .catch((err) => console.log(err));
+          //   console.log(response, ' sms');
+          // })
+          // .catch((err) => console.log(err));
         
       
       data = [...data, newAppointment];
@@ -206,7 +200,6 @@ export default class Demo extends React.PureComponent {
 
   render() {
     const { data, currentViewName } = this.state;
-    const currentUserRole = Cookies.get('currentUserRole');
       const darkTheme = createTheme({
       components: {
         // Name of the component
@@ -214,7 +207,7 @@ export default class Demo extends React.PureComponent {
           styleOverrides: {
             // Name of the slot
             root: {
-              backgroundColor: 'black ', // Custom background color
+              backgroundColor: 'white ', // Custom background color
               // fontSize: '1.5rem', // Custom font size
               color: 'white',
               fontSize: '1rem',
@@ -225,7 +218,6 @@ export default class Demo extends React.PureComponent {
         MuiPaper: {
           styleOverrides: {
             root: {
-              backgroundColor: currentUserRole === 'employee' ? 'black': 'white',
               color:'white',
               boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
             },

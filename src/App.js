@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -10,13 +9,22 @@ import Demo from './pages/Demo';
 import Main from './components/gantt/Main'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PrivateRoutes from './utils/PrivateRoutes';
-import Cookies from 'js-cookie';
-
+import { useSelector } from 'react-redux';
 
 function App() {
+  
 
-  // const role = 'employee'
-  const role = Cookies.get('currentUserRole');
+  // TODO: Move somewhere else
+  const userName = useSelector(function(state){
+    return state.currentUser.name
+  })
+
+  const userId = useSelector(function(state){
+    return state.currentUser.userId
+  })
+
+
+  
   return (
     <div className="App">
       <Router>
@@ -25,10 +33,8 @@ function App() {
               <Route element={<Home />} path='/' exact/>
               <Route element={<AboutUs />} path='/aboutus' exact/>
               <Route element={<Dashboard />} path='/dashboard' exact/>
-              {role === 'manager' && <Route element={<Demo />} path="/gantt" exact />}
-              {role === 'employee' && <Route element={<Main />} path="/gantt" exact />}
-              <Route element={<Demo />} path='/demo' exact/>
-              <Route element={<Main />} path='/gantt' exact/>
+              {userName === 'employee' && <Route element={<Demo userId={userId}/>} path="/gantt" exact />}
+              {userName === 'manager' && <Route element={<Main />} path="/gantt" exact />}
               <Route element={<Sms />} path='/sms' exact/>
           </Route>
           <Route element={<Login />} path='/login' exact/>

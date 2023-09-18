@@ -7,8 +7,8 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-const navigate = useNavigate();
 
+const navigate = useNavigate();
 const handleSubmit = (e) => {
   e.preventDefault();
   axios.post('http://localhost:3001/api/login', {
@@ -22,12 +22,15 @@ const handleSubmit = (e) => {
   })
   .then(async (response) => {
     if (response.status === 200) {
+     
         navigate('/'); // Navigate to the home page
+        
     }
-    console.log(response, ' desired token');
+    
   })
   .catch((err) => console.log(err));
 };
+
     return (
         <div>
             <h1>Login</h1>
