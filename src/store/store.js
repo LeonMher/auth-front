@@ -6,7 +6,7 @@ const store = createStore(function(state, action){
             ...state,
             currentUser: {
                 name: action.payload.name,
-                userId: action.payload.userId
+                employeeId: action.payload.employeeId
 
             }
         }

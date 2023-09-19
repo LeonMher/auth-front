@@ -123,13 +123,14 @@ export default class Demo extends React.PureComponent {
       }
 
 
-
       if (changed) {
         for (let appointmentId in changed) {
           const updatedAppointment = {
             ...data.find((appointment) => appointment.id === appointmentId),
             ...changed[appointmentId],
           };
+
+          console.log(appointmentId, ' whats the fucking value')
   
           // Convert dates to the desired format if necessary
           updatedAppointment.startDate = moment(updatedAppointment.startDate).format('YYYY-MM-DD HH:mm:ss');
@@ -150,6 +151,14 @@ export default class Demo extends React.PureComponent {
 
         this.setState({ dataChanged: true });
       }
+
+      // if (changed) {
+      //   console.log('changed')
+      //   data = data.map(appointment => (
+      //     changed[appointment.id] ? console.log(changed[appointment.id], 'whats appointment?') : appointment));
+          
+      // }
+      
       if (deleted !== undefined) {
         const deletedAppointmentId = deleted;
 
