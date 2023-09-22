@@ -30,6 +30,7 @@ export default class Demo extends React.PureComponent {
     this.state = {
       
       data: [],
+      requestedShiftData: [],
       dataChanged: false,
       currentViewName: 'work-week',
     };
@@ -51,6 +52,19 @@ export default class Demo extends React.PureComponent {
       .catch((error) => {
         console.error('Error retrieving data:', error);
       });
+
+      //check the requested shifts
+    axios.get(`http://localhost:3001/api/requestshifts`)
+      .then((response) => {
+        const requestedShifts = response.data;
+        // Update the component's state with the retrieved data
+        this.setState({ requestedShiftData: requestedShifts });  
+      })
+      .catch((error) => {
+        console.error('Error retrieving data:', error);
+      });
+
+    
   }
 
   
@@ -94,7 +108,7 @@ export default class Demo extends React.PureComponent {
         newAppointment.endDate = formattedEndDateString;
 
 
-      axios.post(`http://localhost:3001/api/schedule/${this.props.userId}`, newAppointment)
+      axios.post(`http://localhost:3001/api/request/${this.props.userId}`, newAppointment)
         .then((response) => {
           console.log('New appointment added successfully:', response.data);
         })
@@ -129,12 +143,14 @@ export default class Demo extends React.PureComponent {
             ...data.find((appointment) => appointment.id === appointmentId),
             ...changed[appointmentId],
           };
+
+          console.log(updatedAppointment, ' what data do we have');
   
           // Convert dates to the desired format if necessary
           updatedAppointment.startDate = moment(updatedAppointment.startDate).format('YYYY-MM-DD HH:mm:ss');
           updatedAppointment.endDate = moment(updatedAppointment.endDate).format('YYYY-MM-DD HH:mm:ss');
   
-          axios.put(`http://localhost:3001/api/update-schedule/${appointmentId}`, updatedAppointment)
+          axios.put(`http://localhost:3001/api/request/${appointmentId}`, updatedAppointment)
             .then((response) => {
               console.log('Appointment updated successfully:', response.data);
             })
@@ -153,22 +169,22 @@ export default class Demo extends React.PureComponent {
         const deletedAppointmentId = deleted;
 
         // Send a DELETE request to delete the appointment
-        axios
-          .delete(`http://localhost:3001/api/delete-schedule/${deletedAppointmentId}`)
-          .then((response) => {
-            if (response.status === 200) {
-              console.log('Appointment deleted successfully:', response.data);
+        // axios
+        //   .delete(`http://localhost:3001/api/delete-schedule/${deletedAppointmentId}`)
+        //   .then((response) => {
+        //     if (response.status === 200) {
+        //       console.log('Appointment deleted successfully:', response.data);
 
-              // Update the data in your state after successful deletion
-              data = data.filter((appointment) => appointment.id !== deleted);
-              this.setState({ data });
-            } else if (response.status === 404) {
-              console.error('Appointment not found:', response.data);
-            }
-          })
-          .catch((error) => {
-            console.error('Error deleting appointment:', error);
-          });
+        //       // Update the data in your state after successful deletion
+        //       data = data.filter((appointment) => appointment.id !== deleted);
+        //       this.setState({ data });
+        //     } else if (response.status === 404) {
+        //       console.error('Appointment not found:', response.data);
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.error('Error deleting appointment:', error);
+        //   });
       }
 
       
@@ -198,7 +214,7 @@ export default class Demo extends React.PureComponent {
   );
 
   render() {
-    const { data, currentViewName } = this.state;
+    const { data, currentViewName, requestedShiftData } = this.state;
       const darkTheme = createTheme({
       components: {
         // Name of the component
@@ -225,8 +241,28 @@ export default class Demo extends React.PureComponent {
       },
     });
 
+
+    const handleApproveFunc = () => {
+
+      axios.post(`http://localhost:3001/api/approveandapplyshifts/${this.props.userId}`)
+        .then((response) => {
+          console.log('New appointment added successfully:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error adding new appointment:', error);
+        });
+      console.log('approved')
+    }
     return (
       <ThemeProvider theme={darkTheme}>
+        {requestedShiftData.map((dat)=>{
+          return(
+            <>
+            <div>{dat.title}</div>
+            <button onClick={handleApproveFunc}>approve</button>
+            </>
+          )
+        })}
       <Paper>
         <Scheduler
           data={data}
