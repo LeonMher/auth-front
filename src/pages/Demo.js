@@ -143,8 +143,6 @@ export default class Demo extends React.PureComponent {
             ...data.find((appointment) => appointment.id === appointmentId),
             ...changed[appointmentId],
           };
-
-          console.log(updatedAppointment, ' what data do we have');
   
           // Convert dates to the desired format if necessary
           updatedAppointment.startDate = moment(updatedAppointment.startDate).format('YYYY-MM-DD HH:mm:ss');
