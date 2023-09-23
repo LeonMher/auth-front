@@ -25,7 +25,7 @@ function App() {
 
 
 
-  
+
   return (
     <div className="App">
       <Router>
@@ -34,7 +34,7 @@ function App() {
               <Route element={<Home />} path='/' exact/>
               <Route element={<AboutUs />} path='/aboutus' exact/>
               <Route element={<Dashboard />} path='/dashboard' exact/>
-              <Route element={<Demo userId={userId}/>} path="/gantt" exact />
+              <Route element={<Demo userId={userId} userName={userName}/>} path="/gantt" exact />
               {/* {userName === 'manager' && <Route element={<Main />} path="/gantt" exact />} */}
               <Route element={<Sms />} path='/sms' exact/>
           </Route>

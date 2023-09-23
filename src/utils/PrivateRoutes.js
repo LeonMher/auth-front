@@ -8,18 +8,19 @@ const PrivateRoutes = () => {
     const token = Cookies.get('jwtt');
     // const role = Cookies.get('jwtrole');
     const employeeId = Cookies.get('jwtuserid');
+    const employee_userName = Cookies.get('jwtusername');
     const dispatch = useDispatch()
 
     
 
         if (employeeId) {
           const decodedUserId = jwt_decode(employeeId);
-          
+          const decodedUserName = jwt_decode(employee_userName)
           dispatch({
             type: 'edit-current-user-name',
             payload:{
                 employeeId: decodedUserId.employeeId,
-                // name: decodedToken.role
+                name: decodedUserName.username
             }
         })
         }

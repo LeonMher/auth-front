@@ -64,7 +64,6 @@ export default class Demo extends React.PureComponent {
         console.error('Error retrieving data:', error);
       });
 
-    
   }
 
   
@@ -79,7 +78,18 @@ export default class Demo extends React.PureComponent {
         .catch((error) => {
           console.error('Error retrieving updated data:', error);
         });
+
+        axios.get(`http://localhost:3001/api/requestshifts`)
+      .then((response) => {
+        const requestedShifts = response.data;
+        // Update the component's state with the retrieved data
+        this.setState({ requestedShiftData: requestedShifts });  
+      })
+      .catch((error) => {
+        console.error('Error retrieving data:', error);
+      });
     }
+    
   }
 
    currentDate = new Date();
@@ -107,6 +117,7 @@ export default class Demo extends React.PureComponent {
         newAppointment.startDate = formattedStartDateString;
         newAppointment.endDate = formattedEndDateString;
 
+        newAppointment.userName = this.props.userName
 
       axios.post(`http://localhost:3001/api/request/${this.props.userId}`, newAppointment)
         .then((response) => {
@@ -147,7 +158,7 @@ export default class Demo extends React.PureComponent {
           // Convert dates to the desired format if necessary
           updatedAppointment.startDate = moment(updatedAppointment.startDate).format('YYYY-MM-DD HH:mm:ss');
           updatedAppointment.endDate = moment(updatedAppointment.endDate).format('YYYY-MM-DD HH:mm:ss');
-  
+          updatedAppointment.userName = this.props.userName
           axios.put(`http://localhost:3001/api/request/${appointmentId}`, updatedAppointment)
             .then((response) => {
               console.log('Appointment updated successfully:', response.data);
