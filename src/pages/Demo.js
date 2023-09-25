@@ -10,18 +10,19 @@ import {
   DateNavigator,
   Toolbar,
   ViewSwitcher,
+  
   MonthView,
   DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
+
 import { DragDropProvider } from '@devexpress/dx-react-scheduler-material-ui';
-import Cookies from 'js-cookie';
 
 import moment from 'moment';
 import axios from 'axios'
 import {createTheme, ThemeProvider } from '@mui/material/styles';
 import CustomAppointmentForm from '../components/CustomAppointmentForm';
 
-import { appointments } from './demo-data/month-appointments';
+
 
 export default class Demo extends React.PureComponent {
   constructor(props) {
@@ -40,7 +41,7 @@ export default class Demo extends React.PureComponent {
     this.commitChanges = this.commitChanges.bind(this);
   }
 
-  
+
   componentDidMount() {
     // Make an Axios GET request to retrieve data from the API
     axios.get(`http://localhost:3001/api/schedule/${this.props.userId}`)
@@ -175,7 +176,7 @@ export default class Demo extends React.PureComponent {
         this.setState({ dataChanged: true });
       }
       if (deleted !== undefined) {
-        const deletedAppointmentId = deleted;
+        // const deletedAppointmentId = deleted;
 
         // Send a DELETE request to delete the appointment
         // axios
@@ -221,7 +222,7 @@ export default class Demo extends React.PureComponent {
       {/* Add more custom fields or styling as needed */}
     </AppointmentForm.OverlayLayout>
   );
-
+    
   render() {
     const { data, currentViewName, requestedShiftData } = this.state;
       const darkTheme = createTheme({
@@ -261,7 +262,7 @@ export default class Demo extends React.PureComponent {
           console.error('Error adding new appointment:', error);
         });
       console.log('approved')
-    }
+    }  
     return (
       <ThemeProvider theme={darkTheme}>
         {requestedShiftData.map((dat)=>{
@@ -310,7 +311,7 @@ export default class Demo extends React.PureComponent {
   
   
 />
-        </Scheduler>
+        </Scheduler> 
       </Paper>
       </ThemeProvider>
     );

@@ -6,7 +6,7 @@ import AboutUs from './pages/AboutUs';
 import Dashboard from './pages/Dashboard'
 import Sms from './pages/Sms'
 import Demo from './pages/Demo';
-import Main from './components/gantt/Main'
+import Calendar from './pages/Calendar';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import PrivateRoutes from './utils/PrivateRoutes';
 import { useSelector } from 'react-redux';
@@ -35,6 +35,7 @@ function App() {
               <Route element={<AboutUs />} path='/aboutus' exact/>
               <Route element={<Dashboard />} path='/dashboard' exact/>
               <Route element={<Demo userId={userId} userName={userName}/>} path="/gantt" exact />
+              <Route element={<Calendar userId={userId} userName={userName}/>} path="/cal" exact/>
               {/* {userName === 'manager' && <Route element={<Main />} path="/gantt" exact />} */}
               <Route element={<Sms />} path='/sms' exact/>
           </Route>

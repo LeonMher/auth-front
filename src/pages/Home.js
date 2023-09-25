@@ -17,6 +17,9 @@ const Home = () => {
             <Link to="/demo">Demo</Link>
             <br/>
             <Link to="/gantt">Schedule</Link>
+            <br />
+            <Link to="/cal">Calendar</Link>
+
           
         </div>
     )
