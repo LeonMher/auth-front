@@ -6,12 +6,15 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS } from './event-utils'
 import CustomModal from './CustomModal'
+import CustomUpdateModal from './CustomUpdateModal'
 import axios from 'axios'
+import moment from 'moment';
 
 export default class DemoApp extends React.Component {
 
   state = {
     dates: '',
+    isUpdateModalOpen: false,
     isModalOpen: false,
     selectedStartDate: '',
     selectedEndDate: '',
@@ -75,6 +78,43 @@ console.log('asd')  }
     });
   };
 
+
+  handleEventChange = (selectInfo) => {
+    // Open the modal and save the selected start date
+    console.log(selectInfo.event.id, 'updating')
+    this.setState({
+      
+      isUpdateModalOpen: true,
+      selectedStartDate: selectInfo.startStr,
+      selectedEndDate: selectInfo.endStr,
+    });
+
+        const formattedStartDate = moment(selectInfo.event.start);
+        const formattedEndDate = moment(selectInfo.event.end);
+        
+        const formattedStartDateString = formattedStartDate.format('YYYY-MM-DD HH:mm:ss');
+        const formattedEndDateString = formattedEndDate.format('YYYY-MM-DD HH:mm:ss');
+
+    axios.put(`http://localhost:3001/api/request/${selectInfo.event.id}`, {
+        id: selectInfo.event.id,
+        userName: this.props.userName,
+        title: "title",
+        allDay: true,
+        notes: "notes",
+        start: formattedStartDateString,
+        end: formattedEndDateString,
+        employee_id: 2
+    })
+        .then((response) => {
+          console.log('New appointment updated successfully:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error updating new appointment:', error);
+        });
+
+
+  };
+
   handleCloseModal = () => {
     // Close the modal
     this.setState({
@@ -88,6 +128,35 @@ console.log('asd')  }
     console.log('Selected End Date:', endDate);
     // Close the modal
     this.handleCloseModal();
+  };
+
+
+  handleEventClick = (eventInfo) => {
+    // Prepare the data to be sent in the PUT request
+    const updatedEvent = {
+      title: eventInfo.event.title,
+      notes: eventInfo.event.notes,
+      start: eventInfo.event.startStr,
+      end: eventInfo.event.endStr,
+      // Add other event properties you want to update
+        // Open the modal and save the selected start date        
+    };
+
+    console.log(eventInfo.event, ' event info')
+    this.setState({
+        isModalOpen: true,
+        selectedStartDate: updatedEvent.start,
+        selectedEndDate: updatedEvent.end,
+      });
+  
+    // Send a PUT request to update the event on the server
+    // axios.put(`http://localhost:3001/api/request/${eventInfo.event.id}`, updatedEvent)
+    //   .then((response) => {
+    //     console.log('Event updated successfully:', response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error updating event:', error);
+    //   });
   };
 
   render() {
@@ -114,9 +183,9 @@ console.log('asd')  }
             eventContent={renderEventContent} // custom render function
             eventClick={this.handleEventClick}
             eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+            eventChange={this.handleEventChange}
             /* you can update a remote database when these fire:
             eventAdd={function(){}}
-            eventChange={function(){}}
             eventRemove={function(){}}
             */
           />
@@ -124,6 +193,15 @@ console.log('asd')  }
           isOpen={this.state.isModalOpen}
           onClose={this.handleCloseModal}
           onSubmit={this.handleSubmitModal}
+          selectedStartDate={this.state.selectedStartDate}
+          selectedEndDate={this.state.selectedEndDate}
+          userName={this.props.userName}
+
+        /> }
+        {this.state.isUpdateModalOpen && <CustomUpdateModal
+          isOpen={this.state.isUpdateModalOpen}
+          onClose={this.handleUpdateCustomCloseModal}
+          onSubmit={this.handleUpdateSubmitModal}
           selectedStartDate={this.state.selectedStartDate}
           selectedEndDate={this.state.selectedEndDate}
           userName={this.props.userName}
@@ -191,11 +269,11 @@ console.log('asd')  }
 //     }
 //   }
 
-  handleEventClick = (clickInfo) => {
-    if (alert(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove()
-    }
-  }
+//   handleEventClick = (clickInfo) => {
+//     if (alert(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+//       clickInfo.event.remove()
+//     }
+//   }
 
 //   handleEvents = (events) => {
 //     console.log('something happened ', events)
