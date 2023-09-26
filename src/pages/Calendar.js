@@ -10,6 +10,23 @@ import CustomUpdateModal from './CustomUpdateModal'
 import axios from 'axios'
 import moment from 'moment';
 
+
+//mui stuff
+
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+
+
+
 export default class DemoApp extends React.Component {
 
   state = {
@@ -19,7 +36,8 @@ export default class DemoApp extends React.Component {
     selectedStartDate: '',
     selectedEndDate: '',
     weekendsVisible: true,
-    currentEvents: []
+    currentEvents: [],
+    left: false
   }
 
   componentDidMount() {
@@ -66,7 +84,7 @@ export default class DemoApp extends React.Component {
     //     });
 
     
-console.log('asd')  }
+  }
 
   handleDateSelect = (selectInfo) => {
     // Open the modal and save the selected start date
@@ -75,7 +93,10 @@ console.log('asd')  }
       isModalOpen: true,
       selectedStartDate: selectInfo.startStr,
       selectedEndDate: selectInfo.endStr,
+      left: true
+      
     });
+
   };
 
 
@@ -123,9 +144,7 @@ console.log('asd')  }
   };
 
   handleSubmitModal = (startDate, endDate) => {
-    // Handle the selected dates (e.g., save them or perform actions)
-    console.log('Selected Start Date:', startDate);
-    console.log('Selected End Date:', endDate);
+    
     // Close the modal
     this.handleCloseModal();
   };
@@ -160,8 +179,51 @@ console.log('asd')  }
   };
 
   render() {
+
+    const toggleDrawer = (anchor, open) => (event) => {
+      if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+        return;
+      }
+      
+      this.setState({ ...this.state, [anchor]: open });
+     
+    };
+  
+    const list = (anchor) => (
+      
+      <Box
+        sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+        role="presentation"
+        onClick={toggleDrawer(anchor, false)}
+        onKeyDown={toggleDrawer(anchor, false)}
+        
+      >
+        {console.log(this.state.selectedStartDate, ' start date info')}
+        <CustomModal
+          isOpen={this.state.isModalOpen}
+          onClose={this.handleCloseModal}
+          onSubmit={this.handleSubmitModal}
+          selectedStartDate={this.state.selectedStartDate}
+          selectedEndDate={this.state.selectedEndDate}
+          userName={this.props.userName}
+
+        />
+      </Box>
+    );
+
+
     return (
       <div className='demo-app'>
+
+   
+    <Button onClick={toggleDrawer('left', true)}>Open</Button>
+          <Drawer
+            anchor={'left'}
+            open={this.state['left']}
+            onClose={toggleDrawer('left', false)}
+          >
+            {list('anchor')}
+          </Drawer>
         {this.renderSidebar()}
         <div className='demo-app-main'>
           <FullCalendar
@@ -181,6 +243,7 @@ console.log('asd')  }
             select={this.handleDateSelect}
             events={this.state.currentEvents}
             eventContent={renderEventContent} // custom render function
+            //to change an event
             eventClick={this.handleEventClick}
             eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
             eventChange={this.handleEventChange}
@@ -189,7 +252,7 @@ console.log('asd')  }
             eventRemove={function(){}}
             */
           />
-        {this.state.isModalOpen && <CustomModal
+        {/* {this.state.isModalOpen && <CustomModal
           isOpen={this.state.isModalOpen}
           onClose={this.handleCloseModal}
           onSubmit={this.handleSubmitModal}
@@ -197,7 +260,7 @@ console.log('asd')  }
           selectedEndDate={this.state.selectedEndDate}
           userName={this.props.userName}
 
-        /> }
+        /> } */}
         {this.state.isUpdateModalOpen && <CustomUpdateModal
           isOpen={this.state.isUpdateModalOpen}
           onClose={this.handleUpdateCustomCloseModal}
