@@ -16,14 +16,7 @@ import moment from 'moment';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
 
 
 
@@ -42,7 +35,7 @@ export default class DemoApp extends React.Component {
 
   componentDidMount() {
     // Make an Axios GET request to retrieve data from the API
-    axios.get(`http://localhost:3001/api/schedule/${this.props.userId}`)
+    axios.get(`http://localhost:3001/api/allschedules/`)
       .then((response) => {
         console.log(response, ' Do i see this in calendar view?')
         const retrievedData = response.data;
@@ -206,6 +199,7 @@ export default class DemoApp extends React.Component {
           selectedStartDate={this.state.selectedStartDate}
           selectedEndDate={this.state.selectedEndDate}
           userName={this.props.userName}
+          userId={this.props.userId}
 
         />
       </Box>
@@ -268,6 +262,7 @@ export default class DemoApp extends React.Component {
           selectedStartDate={this.state.selectedStartDate}
           selectedEndDate={this.state.selectedEndDate}
           userName={this.props.userName}
+          userId={this.props.userId}
 
         /> }
 

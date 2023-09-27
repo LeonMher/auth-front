@@ -5,7 +5,7 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {LocalizationProvider, TimePicker, DateTimePicker, DatePicker,} from '@mui/x-date-pickers';
 
 
-const CustomModal = ({ isOpen, onClose, onSubmit, selectedStartDate, selectedEndDate, userName }) => {
+const CustomModal = ({ isOpen, onClose, onSubmit, selectedStartDate, selectedEndDate, userName, userId }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [title, setTitle] = useState('');
@@ -21,7 +21,7 @@ const CustomModal = ({ isOpen, onClose, onSubmit, selectedStartDate, selectedEnd
     onClose(); // Close the modal after submitting
 
 
-    axios.post(`http://localhost:3001/api/schedule/2`, {
+    axios.post(`http://localhost:3001/api/request/${userId}`, {
         userName: userName,
         title: title,
         allDay: true,
@@ -31,7 +31,7 @@ const CustomModal = ({ isOpen, onClose, onSubmit, selectedStartDate, selectedEnd
         employee_id: 2
     })
         .then((response) => {
-          console.log('New appointment added successfully:', response.data);
+          console.log('New appointment request added successfully:', response.data);
         })
         .catch((error) => {
           console.error('Error adding new appointment:', error);

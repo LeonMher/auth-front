@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 
-const CustomUpdateModal = ({ isOpen, onClose, onSubmit, selectedStartDate, selectedEndDate, userName }) => {
+const CustomUpdateModal = ({ isOpen, onClose, onSubmit, selectedStartDate, selectedEndDate, userName, userId }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [title, setTitle] = useState('');
@@ -13,8 +13,7 @@ const CustomUpdateModal = ({ isOpen, onClose, onSubmit, selectedStartDate, selec
     onSubmit(startDate, endDate);
     onClose(); // Close the modal after submitting
 
-
-    axios.put(`http://localhost:3001/api/request/17`, {
+    axios.put(`http://localhost:3001/api/request/${userId}`, {
         userName: userName,
         title: title,
         allDay: true,
